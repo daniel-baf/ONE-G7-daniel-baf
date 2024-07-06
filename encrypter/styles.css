@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap");
+
+/* VARIABLES */
+:root {
+  --main-bg-color: #e7eaf4;
+  --primary-color: #0a3871;
+  --secondary-color: #d8dfe8;
+
+  box-sizing: content-box;
+
+  font-family: "Comfortaa", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* UTILITIES */
+.icon {
+  width: 1rem; /* Adjust the width as needed */
+  height: 1rem; /* Adjust the height as needed */
+  vertical-align: middle; /* Align the icon to the middle of the text */
+  margin-left: 5px; /* Optional: Add some space to the left */
+  margin-right: 5px; /* Optional: Add some space to the right */
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.d-none {
+  display: none;
+}
+
+/* default color */
+body {
+  background-color: var(--main-bg-color);
+}
+
+/* configure a div to use display flex */
+.container {
+  justify-content: space-evenly;
+  width: 90%;
+  margin: auto;
+  margin-top: 3rem;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-center {
+  justify-content: center;
+  align-items: center;
+}
+
+/* TEXT INPUT SECTION CSS */
+.text-section {
+  width: 65%;
+  justify-content: space-around;
+}
+
+.logo {
+  width: 15%;
+}
+
+.input-section {
+  margin-top: 5rem;
+  width: 80%;
+}
+
+.input-section__text_area_div {
+  width: 100%;
+  height: 75vh; /* Set the height to 100% of the viewport height */
+  position: relative; /* To ensure textarea fills the parent properly */
+}
+
+.input-text-area {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  resize: none;
+  outline: none;
+  padding: 0; /* Removes any default padding */
+  box-sizing: border-box; /* Ensures padding and borders are included in the width and height */
+  font-size: 2rem;
+}
+
+.buttons-section {
+  width: 90%;
+  justify-content: center;
+  gap: 3rem;
+  /* justify-content: space-around; */
+}
+
+.buttons-section button {
+  text-transform: uppercase;
+  width: 100%;
+  height: 4.2rem;
+  border-radius: 1.3rem;
+  font-size: 1rem;
+  border-color: transparent;
+}
+
+.buttons-section button:hover {
+  cursor: pointer;
+}
+
+.primary-button {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+.primary-button:hover {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.secondary-button {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+}
+
+.secondary-button:hover {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+/* RESULTS CSS STYLES */
+.result-section {
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result_section_card {
+  padding: 2rem;
+  height: 85%;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 2rem 0 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.result_section_card .result_section_copy_section {
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .container,
+  .text-section {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .input-section {
+    width: 95%;
+    margin: auto;
+  }
+
+  .input-section__text_area_div {
+    margin-top: 2.5rem;
+    height: 50vh;
+  }
+
+  .result-section {
+    width: 90%;
+    margin: auto;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+}
+
+@media (max-width: 700px) {
+  .buttons-section {
+    flex-direction: column;
+  }
+}
