@@ -1,16 +1,15 @@
 package com.alura.g7.challge_literatura.literatura;
 
-import API.Controller.APIController;
+import API.Controller.APIController.APIController;
 import API.Domain.Book;
 import API.Domain.ListBooks;
 import API.Domain.SearchParameter;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@SpringBootApplication
-public class LiteraturaApplication2 {
+public class Test {
 
     APIController controller = new APIController();
 
@@ -49,14 +48,14 @@ public class LiteraturaApplication2 {
     }
 
     public void test() {
-//        this.all();
+       this.all();
 //        this.byId(1, 20);
 //        this.withParameters(filters, "AUTOR Y LENGUAJE");
 //        this.find();
     }
 
     public static void main(String[] args) {
-        LiteraturaApplication2 literaturaApplication = new LiteraturaApplication2();
+        Test literaturaApplication = new Test();
         literaturaApplication.test();
 //        SpringApplication.run(LiteraturaApplication.class, args);
     }

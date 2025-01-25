@@ -1,6 +1,10 @@
 package Menu.BooksCollection;
 
+import API.Controller.APIController.APIController;
+import API.Domain.ListBooks;
+import API.Service.BookService;
 import Menu.MenuHandler;
+import Utils.ScreenUtils;
 
 /**
  * BooksDisplayer is a concrete implementation of the MenuHandler interface
@@ -17,11 +21,16 @@ import Menu.MenuHandler;
  *
  * Key Methods:
  * - handleOption(int option): Handles an option if it's "2" or delegates it
- *   to the next handler in the chain.
+ * to the next handler in the chain.
  * - setNext(MenuHandler next): Sets the next handler in the chain.
  */
 public class BooksDisplayerHandler implements MenuHandler {
     private MenuHandler next;
+    private final APIController controller;
+
+    public BooksDisplayerHandler(APIController controller) {
+        this.controller = controller;
+    }
 
     @Override
     public void handleOption(int option) {
@@ -37,9 +46,13 @@ public class BooksDisplayerHandler implements MenuHandler {
         this.next = next;
     }
 
-
     private void displayAllBooks() {
-        System.out.println("Mostrando todos los libros...");
-        // TODO dipslay all books
+        ScreenUtils.cleanScreen("... llamando a la API para mostrar todos los libros ...");
+        ListBooks books =  this.controller.listBooks(1);
+        ScreenUtils.cleanScreen("... mostrando todos los libros ...");
+        books.getBooks().forEach(book -> System.out.println(book));
+        // save books
+        new BookService().save(books);
+
     }
 }

@@ -1,13 +1,15 @@
-package API.Controller;
+package API.Controller.APIController;
 
 import API.Domain.Book;
 import API.Domain.ListBooks;
 import API.Domain.SearchParameter;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Component
 public class APIController {
 
     private static final String BASE_URL = "https://gutendex.com/books";

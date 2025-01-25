@@ -1,26 +1,33 @@
 package Menu.BooksCollection;
 
-
+import API.Controller.APIController.APIController;
+import API.Domain.ListBooks;
 import API.Domain.SearchParameter;
+import API.Service.BookService;
 import Menu.MenuHandler;
+import Utils.ScreenUtils;
 
 import java.util.Map;
 import java.util.Scanner;
 
 /**
  * FilterHandler is a concrete implementation of the MenuHandler interface
- * and serves as a menu option handler for adding filters in a chain of responsibility.
- * It allows users to select and specify filters based on available search parameters.
+ * and serves as a menu option handler for adding filters in a chain of
+ * responsibility.
+ * It allows users to select and specify filters based on available search
+ * parameters.
  */
 public class FilterHandler implements MenuHandler {
 
     private MenuHandler next;
-    private final Map<String, String> filters;
+    private final Map<SearchParameter, String> filters;
     private final Scanner scanner;
+    private final APIController controller;
 
-    public FilterHandler(Map<String, String> filters, Scanner scanner) {
+    public FilterHandler(Map<SearchParameter, String> filters, Scanner scanner, APIController controller) {
         this.filters = filters;
         this.scanner = scanner;
+        this.controller = controller;
     }
 
     @Override
@@ -46,14 +53,17 @@ public class FilterHandler implements MenuHandler {
      * are stored in the `filters` map for later use.
      * <p>
      * Behavior:
-     * - Displays the list of available filters, which correspond to the `SearchParameter` enum values.
+     * - Displays the list of available filters, which correspond to the
+     * `SearchParameter` enum values.
      * - Prompts the user to select a filter option by entering its number.
      * - Allows entering a filter value after a filter is selected.
      * - Continues until the user inputs "0" to stop adding filters.
-     * - Ensures proper user input by validating entries and handling invalid inputs.
+     * - Ensures proper user input by validating entries and handling invalid
+     * inputs.
      * <p>
      * Workflow:
-     * - Enumerates all `SearchParameter` values and displays their names to the user.
+     * - Enumerates all `SearchParameter` values and displays their names to the
+     * user.
      * - Accepts the user's selection of a filter.
      * - Prompts for and stores the value of the selected filter.
      * - Exits when "0" is entered, completing the filter addition process.
@@ -66,42 +76,57 @@ public class FilterHandler implements MenuHandler {
     private void aggregateFiltrates() {
         int opcionFiltro = 0;
         while (opcionFiltro != -1) {
-            System.out.println("Selecciona los filtros que deseas aplicar (0 para continuar):");
-
+            ScreenUtils.cleanScreen("Filtro (0 para continuar): ");
             // Mostrar los filtros disponibles para que el usuario elija
             for (SearchParameter parametro : SearchParameter.values()) {
                 System.out.println(parametro.ordinal() + 1 + ". " + parametro.getValue());
             }
             System.out.println("Elige el número del filtro que deseas aplicar (0 para terminar):");
 
-
             // Validar entrada
             while (!scanner.hasNextInt()) {
                 System.out.println("Por favor, ingresa un número válido.");
-                scanner.next();  // Limpiar el buffer de entrada
+                scanner.next(); // Limpiar el buffer de entrada
             }
             opcionFiltro = scanner.nextInt();
-            scanner.nextLine();  // Limpiar el buffer de la nueva línea (esto es importante)
+            scanner.nextLine(); // Limpiar el buffer de la nueva línea (esto es importante)
 
             if (opcionFiltro == 0) {
-                break;  // Si elige 0, termina de agregar filtros
+                break; // Si elige 0, termina de agregar filtros
             }
 
             if (opcionFiltro > 0 && opcionFiltro <= SearchParameter.values().length) {
-                String filtroSeleccionado = SearchParameter.values()[opcionFiltro - 1].getValue();
-                System.out.print("Introduce el valor para el filtro " + filtroSeleccionado + ": ");
-                String valorFiltro = scanner.nextLine();  // Aquí capturamos la entrada del filtro
+                SearchParameter filtroSeleccionado = SearchParameter.values()[opcionFiltro - 1];
+                System.out.print("Introduce el valor para el filtro " + filtroSeleccionado.getValue() + ": ");
+                String valorFiltro = scanner.nextLine(); // Aquí capturamos la entrada del filtro
 
                 // Asegúrate de limpiar el buffer correctamente aquí también, si es necesario
                 filters.put(filtroSeleccionado, valorFiltro);
-                System.out.println("FILTRO AGREGADO " + filters.toString());
+                System.out.println("FILTRO AGREGADO " + filters);
             } else {
                 System.out.println("Opción no válida. Elige entre los filtros disponibles o 0 para terminar.");
             }
         }
+        ScreenUtils.cleanScreen("... consultando API para filtros " + filters);
+        getByFilter();
+    }
 
-        System.out.println(this.filters);
-        // TODO API FETCH
+    private void getByFilter() {
+        try {
+            ListBooks filteredBooks = this.controller.filterBooks(this.filters, "downloads", 1);
+            filteredBooks.getBooks().forEach(book -> System.out.println(book));
+            System.out.println("¿Deseas guardar los valores filtrados? (1 para sí, cualquier otro número para no):");
+            int saveOption = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer de la nueva línea
+
+            if (saveOption != 1) {
+                return;
+            }
+            // SAVE FILTERED BOOKS
+            new BookService().save(filteredBooks);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
 }
