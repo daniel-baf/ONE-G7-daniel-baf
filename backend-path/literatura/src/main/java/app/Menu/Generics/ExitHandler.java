@@ -1,6 +1,6 @@
-package Menu.Generics;
+package app.Menu.Generics;
 
-import Menu.MenuHandler;
+import app.Menu.MenuHandler;
 
 /**
  * The ExitHandler class is responsible for handling an exit option in a menu-based application.

@@ -5,4 +5,4 @@
  *
  * Also, this package contains the representation as object from the response of the API
  */
-package API;
+package app.API;

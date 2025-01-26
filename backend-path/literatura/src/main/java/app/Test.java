@@ -1,13 +1,12 @@
-package com.alura.g7.challge_literatura.literatura;
-
-import API.Controller.APIController.APIController;
-import API.Domain.Book;
-import API.Domain.ListBooks;
-import API.Domain.SearchParameter;
-import org.springframework.stereotype.Component;
+package app;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import app.API.Controller.APIController.APIController;
+import app.API.Domain.Book;
+import app.API.Domain.ListBooks;
+import app.API.Domain.SearchParameter;
 
 public class Test {
 

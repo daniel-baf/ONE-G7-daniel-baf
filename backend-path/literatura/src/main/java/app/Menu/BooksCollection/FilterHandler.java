@@ -1,14 +1,18 @@
-package Menu.BooksCollection;
+package app.Menu.BooksCollection;
 
-import API.Controller.APIController.APIController;
-import API.Domain.ListBooks;
-import API.Domain.SearchParameter;
-import API.Service.BookService;
-import Menu.MenuHandler;
-import Utils.ScreenUtils;
+import app.Menu.MenuHandler;
+import app.Utils.ScreenUtils;
+import app.API.Controller.APIController.APIController;
+import app.API.Domain.ListBooks;
+import app.API.Domain.SearchParameter;
+import app.API.Service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 import java.util.Scanner;
+
+
+import org.springframework.stereotype.Component;
 
 /**
  * FilterHandler is a concrete implementation of the MenuHandler interface
@@ -17,17 +21,21 @@ import java.util.Scanner;
  * It allows users to select and specify filters based on available search
  * parameters.
  */
+@Component
 public class FilterHandler implements MenuHandler {
 
     private MenuHandler next;
     private final Map<SearchParameter, String> filters;
     private final Scanner scanner;
     private final APIController controller;
+    private final BookService bookService;
 
-    public FilterHandler(Map<SearchParameter, String> filters, Scanner scanner, APIController controller) {
+    @Autowired
+    public FilterHandler(Map<SearchParameter, String> filters, Scanner scanner, APIController controller, BookService bookService) {
         this.filters = filters;
         this.scanner = scanner;
         this.controller = controller;
+        this.bookService = bookService;
     }
 
     @Override
@@ -76,6 +84,7 @@ public class FilterHandler implements MenuHandler {
     private void aggregateFiltrates() {
         int opcionFiltro = 0;
         while (opcionFiltro != -1) {
+
             ScreenUtils.cleanScreen("Filtro (0 para continuar): ");
             // Mostrar los filtros disponibles para que el usuario elija
             for (SearchParameter parametro : SearchParameter.values()) {
@@ -91,6 +100,7 @@ public class FilterHandler implements MenuHandler {
             opcionFiltro = scanner.nextInt();
             scanner.nextLine(); // Limpiar el buffer de la nueva línea (esto es importante)
 
+
             if (opcionFiltro == 0) {
                 break; // Si elige 0, termina de agregar filtros
             }
@@ -99,6 +109,7 @@ public class FilterHandler implements MenuHandler {
                 SearchParameter filtroSeleccionado = SearchParameter.values()[opcionFiltro - 1];
                 System.out.print("Introduce el valor para el filtro " + filtroSeleccionado.getValue() + ": ");
                 String valorFiltro = scanner.nextLine(); // Aquí capturamos la entrada del filtro
+
 
                 // Asegúrate de limpiar el buffer correctamente aquí también, si es necesario
                 filters.put(filtroSeleccionado, valorFiltro);
@@ -114,16 +125,9 @@ public class FilterHandler implements MenuHandler {
     private void getByFilter() {
         try {
             ListBooks filteredBooks = this.controller.filterBooks(this.filters, "downloads", 1);
-            filteredBooks.getBooks().forEach(book -> System.out.println(book));
-            System.out.println("¿Deseas guardar los valores filtrados? (1 para sí, cualquier otro número para no):");
-            int saveOption = scanner.nextInt();
-            scanner.nextLine(); // Limpiar el buffer de la nueva línea
-
-            if (saveOption != 1) {
-                return;
-            }
+            ScreenUtils.cleanScreen("Se han encontrado " + filteredBooks.getBooks().size() + " libros con los filtros aplicados.\nGuardando en la base de datos");
             // SAVE FILTERED BOOKS
-            new BookService().save(filteredBooks);
+            this.bookService.saveBooksToDatabase(filteredBooks);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }

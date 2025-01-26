@@ -1,4 +1,4 @@
-package API.Domain;
+package app.API.Domain;
 
 import lombok.Getter;
 

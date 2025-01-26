@@ -1,9 +1,9 @@
-package API.Repository;
+package app.API.Repository;
 
-import API.Domain.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
+import app.API.Domain.Book;
 
-@Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
 }

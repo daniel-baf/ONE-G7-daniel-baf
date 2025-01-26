@@ -1,9 +1,10 @@
-package API.Controller.APIController;
+package app.API.Controller.APIController;
 
-import API.Domain.Book;
-import API.Domain.ListBooks;
-import API.Domain.SearchParameter;
 import org.springframework.stereotype.Component;
+
+import app.API.Domain.Book;
+import app.API.Domain.ListBooks;
+import app.API.Domain.SearchParameter;
 
 import java.util.Arrays;
 import java.util.Map;

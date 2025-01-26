@@ -1,0 +1,67 @@
+
+
+
+
+package app;
+
+import app.API.Controller.BookController;
+import app.API.Domain.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+enum MenuOption {
+    EXIT(0),
+    FILTER(1),
+    DISPLAY_BOOKS(2);
+
+    private final int value;
+
+    MenuOption(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+}
+
+@SpringBootApplication
+public class LiteraturaApplication implements CommandLineRunner {
+
+    private final BookController bookController;
+    private final Scanner scanner = new Scanner(System.in);
+    private final APIController controller;
+
+    @Autowired
+    public LiteraturaApplication(BookController bookController) {
+        this.bookController = bookController;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(app.LiteraturaApplication.class, args);
+    }
+
+    @Override
+    public void run(String... args) {
+        // Test BookController methods directly here
+
+        // Create a new book object
+        Book book = new Book();
+        book.setTitle("Test Book");
+
+        // Save the book
+        bookController.saveBook(book);
+        System.out.println("Book saved successfully!");
+
+        // Fetch the book by ID (assuming the book has been saved)
+        Book savedBook = bookController.getBookById(book.getId());
+        if (savedBook != null) {
+            System.out.println("Book retrieved: " + savedBook.getTitle());
+        } else {
+            System.out.println("Book not found!");
+        }
+    }
+}
+

@@ -1,4 +1,4 @@
-package Menu;
+package app.Menu;
 
 /**
  * The MenuHandler interface provides a mechanism for handling menu options
